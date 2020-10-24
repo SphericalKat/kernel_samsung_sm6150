@@ -1,18 +1,30 @@
-Linux kernel
-============
+################################################################################
+1. How to Build
+        - get Toolchain
+                From android git serveru, codesourcery and etc ..
+                 - gcc-cfp/gcc-cfp-single/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+                From Qualcomm developer network (https://developer.qualcomm.com/software/snapdragon-llvm-compiler-android/tools)
+                 - llvm-arm-toolchain-ship/8.0/
 
-This file was moved to Documentation/admin-guide/README.rst
+        - make output folder
+                EX) OUTPUT_DIR=out
+                $ mkdir out
 
-Please notice that there are several guides for kernel developers and users.
-These guides can be rendered in a number of formats, like HTML and PDF.
+        - edit Makefile
+                edit "CROSS_COMPILE" to right toolchain path(You downloaded).
+                        EX)  CROSS_COMPILE=<android platform directory you download>/android/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+                        Ex)  CROSS_COMPILE=/usr/local/toolchain/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android- // check the location of toolchain
+        - to Build
+                $ export ARCH=arm64
+                $ make -C $(pwd) O=$(pwd)/out KCFLAGS=-mno-android m51_eur_open_defconfig
+                $ make -C $(pwd) O=$(pwd)/out KCFLAGS=-mno-android
 
-In order to build the documentation, use ``make htmldocs`` or
-``make pdfdocs``.
+2. Output files
+        - Kernel : arch/arm64/boot/Image
+        - module : drivers/*/*.ko
 
-There are various text files in the Documentation/ subdirectory,
-several of them using the Restructured Text markup notation.
-See Documentation/00-INDEX for a list of what is contained in each file.
-
-Please read the Documentation/process/changes.rst file, as it contains the
-requirements for building and running the kernel, and information about
-the problems which may result by upgrading your kernel.
+3. How to Clean
+        Change to OUTPUT_DIR folder
+        EX) /home/dpi/qb5_8815/workspace/P4_1716/android/out/target/product/m51/out
+        $ make clean
+################################################################################
