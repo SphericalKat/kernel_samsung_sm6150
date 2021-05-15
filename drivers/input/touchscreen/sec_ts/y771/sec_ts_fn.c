@@ -4163,7 +4163,7 @@ int sec_tclm_data_read(struct i2c_client *client, int address)
 		if (ret < 0)
 			return ret;
 
-		memcpy(&ts->tdata->nvdata, nbuff, sizeof(struct sec_tclm_nvdata));
+		memcpy(&ts->tdata->nvdata, 0x00, sizeof(struct sec_tclm_nvdata));
 		return ret;
 	case SEC_TCLM_NVM_TEST:
 		input_info(true, &ts->client->dev, "%s: dt: tclm_level [%d] afe_base [%04X]\n",
@@ -4186,12 +4186,12 @@ int sec_tclm_data_write(struct i2c_client *client, int address)
 {
 	struct sec_ts_data *ts = i2c_get_clientdata(client);
 	int ret = 1;
-	u8 nbuff[SEC_TS_NVM_OFFSET_LENGTH - SEC_TS_NVM_OFFSET_CAL_COUNT];
+	u8 nbuff[SEC_TS_NVM_OFFSET_LENGTH - SEC_TS_NVM_OFFSET_CAL_COUNT - 1];
 
-	memset(nbuff, 0x00, sizeof(struct sec_tclm_nvdata));
+	memset(0x00, 0x00, sizeof(struct sec_tclm_nvdata));
 	switch (address) {
 	case SEC_TCLM_NVM_ALL_DATA:
-		memcpy(nbuff, &ts->tdata->nvdata, sizeof(struct sec_tclm_nvdata));
+		memcpy(0x00, &ts->tdata->nvdata, sizeof(struct sec_tclm_nvdata));
 		ret = set_tsp_nvm_data_by_size(ts, SEC_TS_NVM_OFFSET_CAL_COUNT, sizeof(struct sec_tclm_nvdata), nbuff);
 		return ret;
 	case SEC_TCLM_NVM_TEST:
